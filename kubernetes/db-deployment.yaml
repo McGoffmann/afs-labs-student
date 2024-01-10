@@ -23,6 +23,6 @@ spec:
         - secretRef:
             name: db-secret
         name: db-deployment
-        image: https://registry.dev.afsmtddso.com/harbor/projects/43/repositories/db
+        image: registry.dev.afsmtddso.com/mhoffmann-harbor-project/db:e485130-1077c8d
         ports:
         - containerPort: 5432
