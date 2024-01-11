@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}-app-deployment
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: app
+    managed-by: Helm
+spec:
+  {{- if .Values.app.replica_count }}
+  replicas: {{ .Values.app.replica_count }}
+  {{- end }}
+  strategy:
+    type: Recreate
+  minReadySeconds: 20
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - envFrom:
+        - secretRef:
+            name: db-secret
+        name: {{ .Chart.Name }}
+        image: {{ .Values.app.image }}
+        ports:
+        - containerPort: {{ .Values.app.containerPort }}
